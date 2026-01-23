@@ -1,6 +1,6 @@
 # My First Post
 
-![My_First_Post](https://github.com/R4335/R4335.github.io/blob/d645b44b63fa56a232c46fb0b06ef9dda7b5c7eb/blog/assets/my_first_post.webp)
+![My_First_Post](https://raw.githubusercontent.com/R4335/R4335.github.io/main/blog/assets/my_first_post.webp)
 
 Hope everyone is doing well.
 
