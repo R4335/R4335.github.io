@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNAME</title>
+    <style>
+        body {
+            max-width: 650px;
+            margin: 40px auto;
+            padding: 0 20px;
+            font-family: monospace;
+            line-height: 1.6;
+            color: #333;
+        }
+        
+        h1 {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+        
+        h2 {
+            font-size: 1.2rem;
+            margin-top: 40px;
+            margin-bottom: 10px;
+        }
+        
+        h3 {
+            font-size: 1rem;
+            margin-top: 20px;
+            margin-bottom: 5px;
+        }
+        
+        a {
+            color: #333;
+            cursor: pointer;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        .back-link {
+            color: #666;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .post-content {
+            display: none;
+        }
+        
+        #blog-list {
+            margin-top: 10px;
+        }
+        
+        pre {
+            background: #f4f4f4;
+            padding: 10px;
+            overflow-x: auto;
+            border-left: 3px solid #333;
+        }
+        
+        code {
+            background: #f4f4f4;
+            padding: 2px 5px;
+        }
+        
+        pre code {
+            background: none;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="home">
+        <h1>Mohamad Raizudeen</h1>
+        <p class="subtitle">Linux Security & Kernel Developer</p>
+        
+        <h2>About</h2>
+        <p>I work on Linux systems close to the kernel.<br><br>My current focus is Linux kernel development and Linux security—understanding how operating systems behave at a low level and how vulnerabilities emerge when abstractions fail.<br><br>Most of my work revolves around C, Linux internals, reverse engineering, and building pwn/reversing CTF challenges.</p>
+        
+        <h2>Projects</h2>
+        
+        <h3>L3flood</h3>
+        <p>L3flood is a simple yet effective Layer 3 flood tool written in <b>C</b>. It crafts and sends raw icmp packets in a tight loop, allowing users to test the robustness of local or remote network endpoints under high traffic volume. >> <a href="https://github.com/R4335/" target="_blank">github</a></p>
+        
+        <h3>PolyVault(PV)</h3>
+        <p>PolyVault is an advanced password generator as well as password storage application written on <b>RUST</b> using modern cryptographic algorithms, offline based no cloud. >> <a href="https://www.linkedin.com/in/mohamad-raizudeen/" target="_blank">DM ME</a> to experience the tool.</p>
+        
+        <h3>PaygenCC(PCC)</h3>
+        <p>PaygenCC is an payload generator developed using <b>C++</b> and <b>MSF</b> >> <a href="https://www.linkedin.com/in/mohamad-raizudeen/" target="_blank">DM ME</a> to experience the tool.</p>
+        
+        <h2>Writing</h2>
+        <div id="blog-list"></div>
+        
+        <p style="margin-top: 50px; color: #666;">
+            <a href="mailto:raizudeen.kerneldev@gmail.com">email</a> / 
+            <a href="https://github.com/R4335" target="_blank">github</a> / 
+            <a href="https://www.linkedin.com/in/mohamad-raizudeen/" target="_blank">LinkedIn</a>
+        </p>
+    </div>
+    
+    <div id="post-view" class="post-content">
+        <p class="back-link"><a onclick="showHome()">← back</a></p>
+        <div id="post-body"></div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/11.1.1/marked.min.js"></script>
+    <script>
+        // Configuration - UPDATE THESE VALUES
+        const GITHUB_USER = 'R4335';
+        const GITHUB_REPO = 'R4335.github.io';
+        const BLOG_FOLDER = 'blog';
+        
+        // List of your blog posts (add new posts here)
+        const blogPosts = [
+            {
+                file: 'my-first-post.md',
+                title: 'My First Blog Post',
+                date: 'Jan 23, 2026',
+                summary: 'A short summary of what this post is about.'
+            }
+            // Add more posts here in the same format
+        ];
+        
+        // Load blog list
+        function loadBlogList() {
+            const blogListDiv = document.getElementById('blog-list');
+            blogPosts.forEach(post => {
+                const postDiv = document.createElement('div');
+                postDiv.innerHTML = `
+                    <h3><a onclick="loadPost('${post.file}')">${post.title}</a></h3>
+                    <p>${post.date} - ${post.summary}</p>
+                `;
+                blogListDiv.appendChild(postDiv);
+            });
+        }
+        
+        // Load individual post from GitHub
+        async function loadPost(filename) {
+            const url = `https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_REPO}/main/${BLOG_FOLDER}/${filename}`;
+            
+            try {
+                const response = await fetch(url);
+                const markdown = await response.text();
+                const html = marked.parse(markdown);
+                
+                document.getElementById('home').style.display = 'none';
+                document.getElementById('post-view').style.display = 'block';
+                document.querySelector('.back-link').style.display = 'block';
+                document.getElementById('post-body').innerHTML = html;
+                window.scrollTo(0, 0);
+            } catch (error) {
+                alert('Error loading post. Make sure the file exists in your GitHub repo.');
+                console.error(error);
+            }
+        }
+        
+        function showHome() {
+            document.getElementById('home').style.display = 'block';
+            document.getElementById('post-view').style.display = 'none';
+            window.scrollTo(0, 0);
+        }
+        
+        // Load blog list on page load
+        loadBlogList();
+    </script>
+</body>
+</html>
