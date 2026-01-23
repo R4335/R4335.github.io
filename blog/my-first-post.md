@@ -1,6 +1,6 @@
 # My First Post
 
-![My_First_Post](https://raw.githubusercontent.com/R4335/R4335.github.io/main/blog/assets/my_first_post.webp)
+<img src="https://raw.githubusercontent.com/R4335/R4335.github.io/main/blog/assets/my_first_post.webp" width="600" alt="My First Post">
 
 Hope everyone is doing well.
 
