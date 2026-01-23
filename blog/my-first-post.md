@@ -1,5 +1,7 @@
 # My First Post
 
+![My First Website](assets/my_first_post.webp)
+
 Hope everyone is doing well.
 
 This is not actually my first blog post — it’s my **first website**.
