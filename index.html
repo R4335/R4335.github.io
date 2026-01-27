@@ -212,37 +212,33 @@
                 const likeKey = `likes:${currentPost}`;
                 const userLikeKey = `user-liked:${currentPost}`;
                 
-                // Get total likes (shared across all users)
-                const likesData = await window.storage.get(likeKey, true);
-                const likes = likesData ? parseInt(likesData.value) : 0;
+                // Get total likes from localStorage
+                const likes = parseInt(localStorage.getItem(likeKey) || '0');
+                const userLiked = localStorage.getItem(userLikeKey) === 'true';
                 
-                // Check if current user has liked (personal data)
-                const userLiked = await window.storage.get(userLikeKey, false);
-                hasLiked = userLiked ? userLiked.value === 'true' : false;
+                hasLiked = userLiked;
                 
                 document.getElementById('like-count').textContent = likes;
                 document.getElementById('like-icon').textContent = hasLiked ? '♥' : '♡';
                 document.getElementById('like-btn').style.color = hasLiked ? '#e74c3c' : '#333';
             } catch (error) {
-                // If keys don't exist yet, start at 0
                 document.getElementById('like-count').textContent = '0';
                 document.getElementById('like-icon').textContent = '♡';
             }
         }
         
-        async function toggleLike() {
+        function toggleLike() {
             try {
                 const likeKey = `likes:${currentPost}`;
                 const userLikeKey = `user-liked:${currentPost}`;
                 
                 if (hasLiked) {
                     // Unlike
-                    const likesData = await window.storage.get(likeKey, true);
-                    const currentLikes = likesData ? parseInt(likesData.value) : 0;
+                    const currentLikes = parseInt(localStorage.getItem(likeKey) || '0');
                     const newLikes = Math.max(0, currentLikes - 1);
                     
-                    await window.storage.set(likeKey, newLikes.toString(), true);
-                    await window.storage.set(userLikeKey, 'false', false);
+                    localStorage.setItem(likeKey, newLikes.toString());
+                    localStorage.setItem(userLikeKey, 'false');
                     
                     hasLiked = false;
                     document.getElementById('like-count').textContent = newLikes;
@@ -250,18 +246,11 @@
                     document.getElementById('like-btn').style.color = '#333';
                 } else {
                     // Like
-                    let currentLikes = 0;
-                    try {
-                        const likesData = await window.storage.get(likeKey, true);
-                        currentLikes = likesData ? parseInt(likesData.value) : 0;
-                    } catch (e) {
-                        currentLikes = 0;
-                    }
-                    
+                    const currentLikes = parseInt(localStorage.getItem(likeKey) || '0');
                     const newLikes = currentLikes + 1;
                     
-                    await window.storage.set(likeKey, newLikes.toString(), true);
-                    await window.storage.set(userLikeKey, 'true', false);
+                    localStorage.setItem(likeKey, newLikes.toString());
+                    localStorage.setItem(userLikeKey, 'true');
                     
                     hasLiked = true;
                     document.getElementById('like-count').textContent = newLikes;
