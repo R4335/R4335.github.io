@@ -142,6 +142,11 @@
     <div id="post-view" class="post-content">
         <p class="back-link"><a onclick="showHome()">← back</a></p>
         <div id="post-body"></div>
+        <div id="like-section" style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #ddd;">
+            <button id="like-btn" onclick="toggleLike()" style="background: none; border: 1px solid #333; padding: 8px 16px; font-family: monospace; cursor: pointer; font-size: 1rem;">
+                <span id="like-icon">♡</span> <span id="like-count">0</span>
+            </button>
+        </div>
     </div>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/11.1.1/marked.min.js"></script>
@@ -176,8 +181,12 @@
         }
         
         // Load individual post from GitHub
+        let currentPost = '';
+        let hasLiked = false;
+        
         async function loadPost(filename) {
             const url = `https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_REPO}/main/${BLOG_FOLDER}/${filename}`;
+            currentPost = filename;
             
             try {
                 const response = await fetch(url);
@@ -189,9 +198,78 @@
                 document.querySelector('.back-link').style.display = 'block';
                 document.getElementById('post-body').innerHTML = html;
                 window.scrollTo(0, 0);
+                
+                // Load like count
+                await loadLikes();
             } catch (error) {
                 alert('Error loading post. Make sure the file exists in your GitHub repo.');
                 console.error(error);
+            }
+        }
+        
+        async function loadLikes() {
+            try {
+                const likeKey = `likes:${currentPost}`;
+                const userLikeKey = `user-liked:${currentPost}`;
+                
+                // Get total likes (shared across all users)
+                const likesData = await window.storage.get(likeKey, true);
+                const likes = likesData ? parseInt(likesData.value) : 0;
+                
+                // Check if current user has liked (personal data)
+                const userLiked = await window.storage.get(userLikeKey, false);
+                hasLiked = userLiked ? userLiked.value === 'true' : false;
+                
+                document.getElementById('like-count').textContent = likes;
+                document.getElementById('like-icon').textContent = hasLiked ? '♥' : '♡';
+                document.getElementById('like-btn').style.color = hasLiked ? '#e74c3c' : '#333';
+            } catch (error) {
+                // If keys don't exist yet, start at 0
+                document.getElementById('like-count').textContent = '0';
+                document.getElementById('like-icon').textContent = '♡';
+            }
+        }
+        
+        async function toggleLike() {
+            try {
+                const likeKey = `likes:${currentPost}`;
+                const userLikeKey = `user-liked:${currentPost}`;
+                
+                if (hasLiked) {
+                    // Unlike
+                    const likesData = await window.storage.get(likeKey, true);
+                    const currentLikes = likesData ? parseInt(likesData.value) : 0;
+                    const newLikes = Math.max(0, currentLikes - 1);
+                    
+                    await window.storage.set(likeKey, newLikes.toString(), true);
+                    await window.storage.set(userLikeKey, 'false', false);
+                    
+                    hasLiked = false;
+                    document.getElementById('like-count').textContent = newLikes;
+                    document.getElementById('like-icon').textContent = '♡';
+                    document.getElementById('like-btn').style.color = '#333';
+                } else {
+                    // Like
+                    let currentLikes = 0;
+                    try {
+                        const likesData = await window.storage.get(likeKey, true);
+                        currentLikes = likesData ? parseInt(likesData.value) : 0;
+                    } catch (e) {
+                        currentLikes = 0;
+                    }
+                    
+                    const newLikes = currentLikes + 1;
+                    
+                    await window.storage.set(likeKey, newLikes.toString(), true);
+                    await window.storage.set(userLikeKey, 'true', false);
+                    
+                    hasLiked = true;
+                    document.getElementById('like-count').textContent = newLikes;
+                    document.getElementById('like-icon').textContent = '♥';
+                    document.getElementById('like-btn').style.color = '#e74c3c';
+                }
+            } catch (error) {
+                console.error('Error toggling like:', error);
             }
         }
         
