@@ -81,6 +81,20 @@
         .post-content {
             display: none;
         }
+
+        .tags {
+            margin-top: 5px;
+            font-size: 0.85rem;
+        }
+        
+        .tag {
+            display: inline-block;
+            background: #f0f0f0;
+            padding: 2px 8px;
+            margin-right: 5px;
+            border-radius: 3px;
+            color: #666;
+        }
         
         #blog-list {
             margin-top: 10px;
@@ -157,7 +171,8 @@
                 file: 'my-first-post.md',
                 title: 'My First Blog Post',
                 date: 'Jan 23, 2026',
-                summary: 'A short summary of what this post is about.'
+                summary: 'A short summary of what this post is about.',
+                tags: ['lifeupdate', 'linux']
             }
             // Add more posts here in the same format
         ];
@@ -166,10 +181,14 @@
         function loadBlogList() {
             const blogListDiv = document.getElementById('blog-list');
             blogPosts.forEach(post => {
+                const tagsHTML = post.tags ? 
+                    `<div class="tags">${post.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}</div>` : '';
+                
                 const postDiv = document.createElement('div');
                 postDiv.innerHTML = `
                     <h3><a onclick="loadPost('${post.file}')">${post.title}</a></h3>
                     <p>${post.date} - ${post.summary} <a class="read-more" onclick="loadPost('${post.file}')">read more →</a></p>
+                    ${tagsHTML}
                 `;
                 blogListDiv.appendChild(postDiv);
             });
