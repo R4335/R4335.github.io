@@ -1,5 +1,5 @@
 # The Fortress and the clerk - Intro to the linux kernel - Part 1
-### Why your computer is actually to computers, why everything is a file and why the kernel is the ultimate bureaucrat.
+### Why your computer is actually two computers, why everything is a file and why the kernel is the ultimate bureaucrat.
 
 ### The great divide - user space vs kernel space
 Imagine your computer is a medieval kingdom.
