@@ -19,4 +19,4 @@ id
 
 You will see a *uid (User ID)*. Unless that ID is *0 (root)*, you are a peasant. You are stuck in Ring 3. Even *root* is techinically a user space concept, the kernel itself is above even root. The kernel doesn't have UID. It is the system.
 
-***Will Continue part 2 soon...***
+***Read part 2 for more interesting things***
