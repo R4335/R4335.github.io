@@ -225,6 +225,9 @@
                 document.querySelector('.back-link').style.display = 'block';
                 document.getElementById('post-body').innerHTML = html;
                 window.scrollTo(0, 0);
+
+                const postSlug = filename.replace('.md', '');
+                history.pushState({page: 'post', file: filename}, '', `/${postSlug}`);
             } catch (error) {
                 alert('Error loading post. Make sure the file exists in your GitHub repo.');
                 console.error(error);
@@ -235,7 +238,30 @@
             document.getElementById('home').style.display = 'block';
             document.getElementById('post-view').style.display = 'none';
             window.scrollTo(0, 0);
+
+            history.pushState({page: 'home'}, '', '/');
         }
+
+        // Handle browser back/forward buttons
+        window.addEventListener('popstate', function(event) {
+            if (event.state && event.state.page === 'post') {
+                loadPost(event.state.file);
+            } else {
+                showHome();
+            }
+        });
+
+        // Load post from URL on page load
+        window.addEventListener('load', function() {
+            const path = window.location.pathname.substring(1);
+            if (path && path !== '') {
+                const postFile = `${path}.md`;
+                const post = blogPosts.find(p => p.file === postFile);
+                if (post) {
+                    loadPost(postFile);
+                }
+            }
+        });
         
         // Load blog list on page load
         loadBlogList();
