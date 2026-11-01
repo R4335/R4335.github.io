@@ -1,5 +1,7 @@
 # My Linux Kernel Mentorship Experience
 
+![LKMP MENTORSHIP SUMMER 2026](https://raw.githubusercontent.com/R4335/R4335.github.io/main/blog/assets/lkmp_summer_2026.webp)
+
 I have been learning and writing C since 2017 (almost a decade), mostly CLI tools for reversing and pwning, built for research. I am not really a UI or UX person. I like the terminal. I like code that does one thing well and talks to other code through pipes and files. So when I started looking for something to work on, the linux kernel was a natural fit. It's the largest piece of C code that I knew on the internet, because this linux kernel was almost used by any systems all around the world... by reading some blogs I can say 4 billion devices all around the world uses this linux kernel. It runs in the terminal you can't even see and it has no UI to design. This thing made me to apply **Linux Kernel Mentorship Program (LKMP) Summer 2026** cohort.
 
 In simple, this mentorship is a kind of program that connects you with experienced kernel developers and walks you through your first real contributions to mainline linux 
