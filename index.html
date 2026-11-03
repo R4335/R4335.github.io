@@ -143,7 +143,7 @@
             border-radius: 3px;
             color: var(--tag-color);
             white-space: nowrap;
-            transition: background 0.3s, color 0.3sopacity 0.2s;
+            transition: background 0.3s, color 0.3s, opacity 0.2s;
             cursor: pointer;
         }
         
@@ -695,10 +695,29 @@
         });
         
         window.addEventListener('load', function() {
-            var path = window.location.pathname.substring(1);
+            // Support deep links on GitHub Pages via 404.html redirect.
+            // 404.html redirects to /?redirect=<originalPath>; we pick it up here,
+            // clean the URL, and load the matching post. If there's no redirect
+            // param, fall back to the pathname (works when SPA-navigating in-app).
+            var params = new URLSearchParams(window.location.search);
+            var redirectPath = params.get('redirect');
+            var rawPath;
+            if (redirectPath) {
+                rawPath = decodeURIComponent(redirectPath);
+            } else {
+                rawPath = window.location.pathname;
+            }
+            // strip leading slashes
+            var path = rawPath.replace(/^\/+/, '');
             if (path) {
                 var pf = path + '.md';
-                if (blogPosts.find(function(p) { return p.file === pf; })) loadPost(pf);
+                if (blogPosts.find(function(p) { return p.file === pf; })) {
+                    // Clean the ugly ?redirect=... query from the address bar
+                    if (redirectPath) {
+                        history.replaceState({ page: 'home' }, '', window.location.pathname);
+                    }
+                    loadPost(pf);
+                }
             }
         });
         
@@ -860,4 +879,4 @@
         loadBlogList();
     </script>
 </body>
-</html>
+</html
