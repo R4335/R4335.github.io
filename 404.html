@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Redirecting...</title>
+    <script>
+        // SPA fallback for GitHub Pages.
+        // When a deep link like /lkmp-summer-2026 is requested directly,
+        // GitHub Pages serves this 404.html. We redirect to the root index.html
+        // and pass the original path via a query param so index.html's router
+        // can load the correct blog post.
+        (function () {
+            var path = window.location.pathname;
+            var target = '/?redirect=' + encodeURIComponent(path);
+            window.location.replace(target);
+        })();
+    </script>
+    <meta http-equiv="refresh" content="0; url=/?redirect=/">
+</head>
+<body>
+    <p>Redirecting to homepage...</p>
+    <p>If you are not redirected automatically, <a href="/">click here</a>.</p>
+</body>
+</html>
